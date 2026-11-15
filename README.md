@@ -162,8 +162,9 @@ The repo includes a [render.yaml](render.yaml) for [Render](https://render.com) 
    for (`DATABASE_URL`, `GEMINI_API_KEY`, `GROQ_API_KEY`, `TOKEN_ENCRYPTION_KEY`, …).
    Migrations run automatically on every deploy.
 3. Once it's live, open `https://<your-service>.onrender.com/api/health`.
-4. In the extension, go to **Settings → Server URL**, enter that address, and allow
-   it when Chrome asks.
+4. In the extension, open **Settings → Account**, click **Change** next to *Server*, enter
+   that address and allow it when Chrome asks. You stay signed in if both servers share the
+   same database; otherwise NOVA asks you to create an account on the new one.
 
 Things to know:
 
@@ -212,7 +213,8 @@ Calendar flow from "Connect" to the created event. Set `HEADED=1` to watch them 
 | Problem | Fix |
 |---|---|
 | The orb doesn't show | Reload the tab once after installing. It can't run on `chrome://` pages, the Web Store, or Chrome's PDF viewer. |
-| "Can't reach the NOVA server" | Make sure the server is running (`/api/health`) and the URL in Settings matches. |
+| "Can't reach the NOVA server" | Make sure the server is running (`/api/health`) and the URL in Settings matches. A server on Render's free plan takes about a minute to wake up after being idle. |
+| Want to switch between local and deployed servers | Settings → Account → **Change** next to *Server*. |
 | "Hey NOVA" doesn't react | Settings → Voice shows the listener status. If the model is missing, run `npm run setup` in `extension/` and reload NOVA. |
 | The voice sometimes sounds robotic | Gemini's free voice quota ran out for a moment, so the browser voice was used. It switches back by itself. |
 | Google says `redirect_uri_mismatch` | `GOOGLE_REDIRECT_URI` must match the OAuth client exactly, port included. |
