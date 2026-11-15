@@ -1,0 +1,12 @@
+{
+  "name": "nova-extension",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "node ../scripts/setup_wake_word.mjs",
+    "test": "node --test test/*.test.js"
+  },
+  "devDependencies": {
+    "vosk-browser": "0.0.8"
+  }
+}

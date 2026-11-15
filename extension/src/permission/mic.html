@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NOVA — Microphone access</title>
+  <link rel="stylesheet" href="../ui/theme.css">
+  <style>
+    body { display: grid; place-items: center; min-height: 100vh; }
+    .card { max-width: 440px; text-align: center; padding: 28px; }
+    .orb-mini { width: 56px; height: 56px; margin: 0 auto 16px; }
+    p { color: var(--text-2); }
+  </style>
+</head>
+<body>
+  <div class="card stack">
+    <div class="orb-mini"></div>
+    <h1>Allow NOVA to hear you</h1>
+    <p>Chrome needs a one-time permission so you can talk to NOVA from the side panel and say <b>“Hey NOVA”</b> hands-free.</p>
+    <p class="small">With “Hey NOVA” on, wake-word detection runs entirely on this computer. Audio is sent to your NOVA server only after NOVA hears its name, and you can turn it off any time in Settings → Voice.</p>
+    <div><button class="btn primary" id="grant">Allow microphone</button></div>
+    <p class="small" id="status" role="status"></p>
+  </div>
+  <script src="mic.js"></script>
+</body>
+</html>

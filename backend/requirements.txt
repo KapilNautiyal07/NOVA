@@ -1,0 +1,23 @@
+# NOVA backend runtime dependencies (Python 3.11+; developed and tested on 3.13).
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30
+pydantic[email]>=2.9,<3
+pydantic-settings>=2.5
+python-multipart>=0.0.9        # /api/voice/transcribe uploads
+python-dotenv>=1.0
+
+# Database: SQLAlchemy 2 + Alembic. PostgreSQL via psycopg 3 (sync driver).
+sqlalchemy>=2.0.36
+alembic>=1.13
+psycopg[binary]>=3.2
+
+# Agent orchestration. LLM calls go through app/llm/providers.py (httpx), so no vendor SDKs.
+langgraph>=1.0
+langchain-core>=1.0
+httpx>=0.27
+
+# Optional: Redis-backed rate limiting (falls back to in-process when REDIS_URL is unset).
+redis>=5.0
+
+tzdata>=2024.1                 # IANA timezones on Windows
+cryptography>=43            # encrypts stored Google OAuth tokens (Fernet)

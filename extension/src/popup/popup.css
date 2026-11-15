@@ -1,0 +1,10 @@
+body { width: 340px; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+header b { font-size: 14px; }
+.composer { display: flex; gap: 6px; }
+.composer input { flex: 1; height: 32px; border-radius: 8px; border: 1px solid var(--border-strong); background: var(--surface); padding: 0 10px; outline: none; }
+.composer input:focus { border-color: var(--accent); }
+h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 6px; }
+.reply { padding: 10px 12px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); white-space: pre-wrap; max-height: 180px; overflow-y: auto; }
+.reply.error { border-color: rgba(248,113,113,.45); }
+.item { padding: 8px 12px; }
+footer { gap: 6px; }

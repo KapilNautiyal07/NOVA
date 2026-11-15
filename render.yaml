@@ -1,0 +1,35 @@
+# Render Blueprint for the NOVA backend (Render dashboard → New → Blueprint → pick this repo).
+# Values marked `sync: false` are secrets: Render asks for them once and never stores them in git.
+services:
+  - type: web
+    name: nova-api
+    runtime: python
+    region: singapore          # same region as the Neon database
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips "*"
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: ENVIRONMENT
+        value: production
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "30"
+      - key: DATABASE_URL          # Neon connection string (postgresql+psycopg://...?sslmode=require)
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: TOKEN_ENCRYPTION_KEY  # python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+        sync: false
+      - key: REGISTRATION_SECRET   # leave empty to let anyone create an account (public demo)
+        sync: false
+      - key: GOOGLE_CLIENT_ID      # optional: Google Calendar
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI   # https://<your-service>.onrender.com/api/integrations/google/callback
+        sync: false

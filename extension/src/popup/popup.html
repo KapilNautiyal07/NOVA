@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>NOVA</title>
+  <link rel="stylesheet" href="../ui/theme.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="row">
+    <div class="orb-mini"></div><b>NOVA</b><span class="grow"></span>
+    <button class="icon-btn" id="settings" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></button>
+  </header>
+  <form id="ask" class="composer">
+    <input id="q" placeholder="Ask NOVA about this page…" maxlength="2000" autocomplete="off" aria-label="Ask NOVA" autofocus>
+    <button class="btn primary sm" type="submit">Go</button>
+  </form>
+  <div id="reply" class="reply hidden" role="status" aria-live="polite"></div>
+  <section>
+    <h2>Up next</h2>
+    <div id="reminders" class="card flush"><div class="empty-state">Loading…</div></div>
+  </section>
+  <section>
+    <h2>Due today</h2>
+    <div id="tasks" class="card flush"><div class="empty-state">Loading…</div></div>
+  </section>
+  <footer class="row">
+    <button class="btn grow" id="dashboard">Open dashboard</button>
+    <button class="btn" id="save" title="Save this page to memory">Save page</button>
+  </footer>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
