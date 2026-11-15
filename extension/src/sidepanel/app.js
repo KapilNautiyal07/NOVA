@@ -800,7 +800,9 @@ function accountSection() {
   if (S.token && S.user) {
     return card('Account', null,
       setting(S.user.name, `${S.user.email} · ${S.user.timezone}`, h('button', { class: 'btn sm', onclick: async () => { if (confirm('Sign out NOVA on this browser? Your data stays on the server.')) { await chrome.storage.local.remove(['token', 'user', 'nova.reminders']); await bg({ type: 'nova:rebuild' }).catch(() => {}); await boot(); } } }, 'Sign out')),
-      setting('Server', S.backendUrl, h('span', { class: `pill ${S.online ? 'ok' : 'failed'}` }, S.online ? 'connected' : 'offline')),
+      setting('Server', S.backendUrl, h('div', { class: 'row' },
+        h('span', { class: `pill ${S.online ? 'ok' : 'failed'}` }, S.online ? 'connected' : 'offline'),
+        h('button', { class: 'btn sm', onclick: changeServer }, 'Change'))),
     );
   }
   const urlInput = h('input', { class: 'input', name: 'backend', value: S.backendUrl, required: true, 'aria-label': 'Server URL' });
@@ -832,6 +834,34 @@ function accountSection() {
     }, 'Connected with existing token');
   };
   return h('section', { class: 'stack' }, h('div', { class: 'section-title' }, h('h2', {}, 'Connect to your NOVA server')), h('div', { class: 'card stack' }, reg, h('div', { class: 'muted small' }, 'Already registered on another browser?'), tok));
+}
+
+// Move to another server (e.g. localhost → a deployed one) without signing out. The account
+// carries over when both servers share a database; otherwise the user is asked to sign in again.
+async function changeServer() {
+  const raw = prompt('New NOVA server URL (for example https://nova-api.onrender.com):', S.backendUrl);
+  if (!raw || raw.trim().replace(/\/+$/, '') === S.backendUrl) return;
+  const previous = S.backendUrl;
+  guard(async () => {
+    try {
+      await useBackend(raw);
+    } catch (e) {
+      await chrome.storage.local.set({ backendUrl: previous });
+      S.backendUrl = previous;
+      throw e.offline ? new Error(`Couldn't reach ${raw.trim()}. If it's on a free plan it may be waking up, so try again in a minute.`) : e;
+    }
+    try {
+      const user = await api('/api/auth/me');
+      await chrome.storage.local.set({ user });
+    } catch (e) {
+      if (e.status !== 401) throw e;
+      // This server doesn't know the account: sign out locally so the connect form appears.
+      await chrome.storage.local.remove(['token', 'user', 'nova.reminders']);
+      toast('That server doesn’t have your account. Create one (or paste a token) below.', true);
+    }
+    await bg({ type: 'nova:rebuild' }).catch(() => {});
+    await boot();
+  }, 'Server changed');
 }
 
 async function useBackend(raw) {
